@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bookbounty',
         'USER': 'root',
-        'PASSWORD': 'Samip2003',
+        'PASSWORD': 'mySql@123',
 
 
     }
