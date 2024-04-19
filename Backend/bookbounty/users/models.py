@@ -31,7 +31,7 @@ class Book(models.Model):
     ISBN = models.CharField(max_length=13, null=True, blank=True)
     publication_date = models.DateField(null=True, blank=True)
     category = models.CharField(max_length=255, null=True, blank=True)
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books')
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books',db_column='seller_id')
     image = models.ImageField(upload_to='books/', blank=True, null=True)
 
     def __str__(self):
@@ -43,5 +43,5 @@ class Transaction(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sales')
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='purchases')
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
 

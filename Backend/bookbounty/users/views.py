@@ -71,9 +71,26 @@ class BookListAPIView(APIView):
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data)
 
-    
-    def post(self, request):
-        serializer = BookSerializer(data=request.data)
+
+    def post(self, request, format=None):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        try:
+           payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('Unauthenticated!')
+
+        user = User.objects.filter(id=payload['id']).first()
+        user_id = user.id
+
+        # Attach the user's ID to the seller field in the request data
+        mutable_data= request.data.copy()
+        mutable_data['seller'] = user_id
+
+        serializer = BookSerializer(data=mutable_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -88,3 +105,5 @@ class LogoutView(APIView):
         }
         return response
     
+
+

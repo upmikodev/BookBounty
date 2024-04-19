@@ -19,6 +19,8 @@ class BookSerializer(serializers.ModelSerializer):
     
     seller_name=serializers.CharField(source='seller.name', read_only=True)
     seller_location=serializers.CharField(source='seller.location', read_only=True)
+    seller = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+
     class Meta:
         model = Book
-        fields = ['book_id', 'title', 'author', 'description', 'price', 'condition', 'rating', 'ISBN', 'publication_date', 'category', 'seller_name','seller_location','image']
+        fields = ['book_id', 'title', 'author', 'description', 'price', 'condition', 'rating', 'ISBN', 'publication_date', 'category','seller', 'seller_name','seller_location','image']
