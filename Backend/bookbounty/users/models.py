@@ -29,7 +29,8 @@ class Book(models.Model):
     condition = models.CharField(max_length=8, choices=condition_choices)
     rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
     ISBN = models.CharField(max_length=13, null=True, blank=True)
-    publication_date = models.DateField(null=True, blank=True)
+    publication_year = models.CharField(max_length=4, null=True, blank=True)
+    publisher = models.CharField(max_length=255, null=True, blank=True)
     category = models.CharField(max_length=255, null=True, blank=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books',db_column='seller_id')
 
