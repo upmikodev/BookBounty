@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+import os 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -85,7 +85,7 @@ DATABASES = {
         'HOST': 'localhost',
         'NAME': 'bookbountynew',
         'USER': 'root',
-        'PASSWORD': 'mySql@123',
+        'PASSWORD': 'Samip2003',
         'PORT': '3306',
 
     }
@@ -142,3 +142,4 @@ CSRF_COOKIE_HTTPONLY = False  # Allows JavaScript to read the CSRF cookie
 CSRF_COOKIE_SAMESITE = 'Lax'  # Ensures cookie is sent with API requests under the same domain
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
+BOOKS_DIR = os.path.join(BASE_DIR, 'books')
