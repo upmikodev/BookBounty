@@ -1,28 +1,17 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import Layout from './Layout'
+import React, { useContext, useEffect, useState } from 'react'
+import { IsLoggedInContext } from '@/contexts/IsLoggedIn'
+import dynamic from "next/dynamic";
+import BookList from '@/components/BookList';
 
-export default function Home() {
-  const [message, setMessage] = useState('')
-  const [auth, setAuth] = useState(false)
+function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useContext(IsLoggedInContext)
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch('http://localhost:8000/api/user', {
-          credentials: 'include',
-        })
-
-        const content = await response.json()
-
-        setMessage(`Hi ${content.name}`)
-        setAuth(true)
-      } catch (e) {
-        setMessage('You are not logged in')
-        setAuth(false)
-      }
-    })()
-  })
-
-  return <Layout auth={auth}>{message}</Layout>
+  return (
+    <>
+      <div className=''><BookList /></div>
+    </>
+  )
 }
+export default dynamic (() => Promise.resolve(Home), {ssr: false})
+

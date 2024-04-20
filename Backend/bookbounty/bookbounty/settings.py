@@ -136,3 +136,7 @@ AUTH_USER_MODEL = 'users.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
+CSRF_COOKIE_HTTPONLY = False  # Allows JavaScript to read the CSRF cookie
+CSRF_COOKIE_SAMESITE = 'Lax'  # Ensures cookie is sent with API requests under the same domain
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'

@@ -1,29 +1,35 @@
-import React from 'react'
+'use client'
+import React, { useContext } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { getCSRFToken } from '@/lib'
+import { IsLoggedInContext } from '@/contexts/IsLoggedIn'
 
 interface LayoutProps {
-  auth?: boolean
   children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {
   const router = useRouter()
+  const csrfToken = getCSRFToken()
+  const [isLoggedIn, setIsLoggedIn] = useContext(IsLoggedInContext)
 
   const logout = async () => {
-    await fetch('http://localhost:8000/api/logout', {
+    await fetch('http://127.0.0.1:8000/api/logout', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken! },
       credentials: 'include',
     })
 
+    setIsLoggedIn(false)
     await router.push('/login')
+    
   }
 
   let menu
 
-  if (!props.auth) {
+  if (!isLoggedIn) {
     menu = (
       <ul className="navbar-nav me-auto mb-2 mb-md-0">
         <li className="nav-item">

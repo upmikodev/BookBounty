@@ -1,53 +1,122 @@
 'use client'
-import React, {SyntheticEvent, useState} from 'react';
-import {useRouter} from "next/navigation";
-import Layout from '@/components/Layout';
+import React, { SyntheticEvent, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Layout from '@/components/Layout'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 const Register = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const router = useRouter();
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
+  const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [location, setLocation] = useState('')
+  const [message, setMessage] = useState('')
 
-    const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
+  const router = useRouter()
 
-        await fetch('http://127.0.0.1:8000/api/register', {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                name,
-                email,
-                password
-            })
-        });
+  const submit = async (e: SyntheticEvent) => {
+    e.preventDefault()
 
-        console.log('registered')
+    const res = await fetch('http://127.0.0.1:8000/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        username,
+        email,
+        password,
+        location,
+      }),
+    })
+    const data: { [key: string]: string[] } = await res.json()
+    console.log('res (Registration): ', res)
+    console.log('data (Registration): ', data)
 
-        await router.push('/login');
+    if (res.ok) {
+      await router.push('/login')
+      setMessage('Registration successful')
+      setRegistrationSuccess(true)
+    } else {
+      const msg: string = Object.values(data)[0][0]
+      setMessage(msg)
+      await router.push('/register')
     }
+  }
 
-    return (
-        <Layout>
-            <form onSubmit={submit}>
-                <h1 className="h3 mb-3 fw-normal">Please register</h1>
+  return (
+    <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
+      <h3
+        className={`${
+          registrationSuccess ? 'text-green-500' : 'text-red-500'
+        } capitalize`}
+      >
+        {message}
+      </h3>
+      <form
+        onSubmit={submit}
+        className="text-black border rounded-2xl shadow-xl w-[35%] h-[600px] flex flex-col items-center justify-center"
+      >
+        <h1 className="my-4 text-2xl font-bold">Register</h1>
+        <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
+          <Label htmlFor="email">Name</Label>
+          <Input
+            type="text"
+            id="name"
+            placeholder="Name"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
+          <Label htmlFor="email">Username</Label>
+          <Input
+            type="text"
+            id="username"
+            placeholder="Username"
+            required
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            type="email"
+            id="email"
+            placeholder="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
+          <Label htmlFor="email">Password</Label>
+          <Input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
+          <Label htmlFor="email">Location</Label>
+          <Input
+            type="text"
+            id="location"
+            placeholder="Location"
+            required
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </div>
 
-                <input className="form-control" placeholder="Name" required
-                       onChange={e => setName(e.target.value)}
-                />
+        <Button className="my-4" type="submit">
+          Register
+        </Button>
+      </form>
+    </div>
+  )
+}
 
-                <input type="email" className="form-control" placeholder="Email" required
-                       onChange={e => setEmail(e.target.value)}
-                />
-
-                <input type="password" className="form-control" placeholder="Password" required
-                       onChange={e => setPassword(e.target.value)}
-                />
-
-                <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
-            </form>
-        </Layout>
-    );
-};
-
-export default Register;
+export default Register
