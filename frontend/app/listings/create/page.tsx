@@ -48,7 +48,6 @@ const page = () => {
       body: formData,
     })
     const data = await res.json()
-    console.log('listing ko data: ', data)
 
     if (res.ok) {
       alert('Book listed successfully')

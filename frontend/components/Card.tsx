@@ -1,19 +1,27 @@
-import Image from 'next/image'
+'use client'
 import { Button } from './ui/button'
 import { convertImageUrl } from '@/lib'
 import { Book } from '@/types'
-
-
+import { useRouter } from 'next/navigation'
 
 interface BookCardProps {
   book: Book
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
+  const router = useRouter()
+
   const imageUrl = convertImageUrl(book.image)
-  console.log(convertImageUrl(book.image))
+
+  const openBookPage = () => {
+    router.push(`/books/${book.book_id}`)
+  }
+
   return (
-    <div className="w-72 m-4 flex flex-col justify-center items-center shadow-md border py-4 rounded-lg">
+    <div
+      onClick={openBookPage}
+      className="w-72 m-4 flex flex-col justify-center items-center shadow-md border py-4 rounded-lg"
+    >
       <img
         className="h-64 w-40 object-cover border-[0.1px] border-black rounded"
         src={imageUrl}

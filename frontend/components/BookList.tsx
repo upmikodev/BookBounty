@@ -7,10 +7,11 @@ import Image from 'next/image'
 import Banner1 from '@/public/banner1.png'
 import Banner2 from '@/public/banner2.png'
 import { IsLoggedInContext } from '@/contexts/IsLoggedIn'
+import { Book } from '@/types'
 
 const BookList = () => {
   const [isLoggedIn, setIsLoggedIn] = useContext(IsLoggedInContext)
-  const [booksFromServer, setBooksFromServer] = useState([])
+  const [booksFromServer, setBooksFromServer] = useState<Book[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +21,6 @@ const BookList = () => {
         })
         const data = await response.json()
         setBooksFromServer(data)
-        console.log('user data: ', data)
       } catch (error) {
         console.error('Failed to fetch user data:', error)
       }
@@ -38,7 +38,7 @@ const BookList = () => {
   return (
     <div className="max-w-[1600px]">
       <div>
-        <Image src={Banner2} alt=""/>
+        <Image src={Banner2} alt="" />
       </div>
       <div className={`${!isLoggedIn ? 'hidden' : 'flex flex-col'}`}>
         <h1 className="text-4xl my-5 font-semibold w-full px-5">
@@ -56,13 +56,13 @@ const BookList = () => {
 
       <div>
         <h1 className="text-4xl my-5 font-semibold w-full px-5">All books</h1>
-        <div className='flex flex-wrap justify-center'>
-          {false ? (
+        <div className="flex flex-wrap justify-center">
+          {booksFromServer === null ? (
             'Loading...'
           ) : (
-            <div className='flex flex-wrap justify-center'>
-              {serverbooks.map((book, i) => {
-                return <BookCard key={i} book={book} />
+            <div className="flex flex-wrap justify-center">
+              {booksFromServer.map((book) => {
+                return <BookCard key={book.book_id} book={book} />
               })}
             </div>
           )}

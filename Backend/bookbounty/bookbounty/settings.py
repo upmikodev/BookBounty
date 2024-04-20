@@ -85,7 +85,7 @@ DATABASES = {
         'HOST': 'localhost',
         'NAME': 'bookbountynew',
         'USER': 'root',
-        'PASSWORD': 'Samip2003',
+        'PASSWORD': 'mySql@123',
         'PORT': '3306',
 
     }
