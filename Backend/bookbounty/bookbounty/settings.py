@@ -82,10 +82,11 @@ WSGI_APPLICATION = 'bookbounty.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bookbounty',
-        'USER': 'root',
-        'PASSWORD': 'mySql@123',
-
+        'HOST': 'd6ybckq58s9ru745.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        'NAME': 'lggko6ual064qpj3',
+        'USER': 'xc72l85qspz9e1wa',
+        'PASSWORD': 'icyvl9jxl0ky4g91',
+        'PORT': '3306',
 
     }
 }
@@ -140,3 +141,4 @@ CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
 CSRF_COOKIE_HTTPONLY = False  # Allows JavaScript to read the CSRF cookie
 CSRF_COOKIE_SAMESITE = 'Lax'  # Ensures cookie is sent with API requests under the same domain
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+
