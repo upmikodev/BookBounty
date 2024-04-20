@@ -13,6 +13,7 @@ import {
   ScanBarcode,
   Truck,
 } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
 type Props = {
@@ -91,7 +92,7 @@ const page = ({ params: { id } }: Props) => {
             <img
               src={convertImageUrl(bookDetails.image)}
               alt={bookDetails.title}
-              className="w-[80%] rounded"
+              className="w-2/5 lg:w-3/5 md:w-2/5 sm:w-2/5 rounded"
             />
           </div>
           <div className="flex flex-col px-5">
@@ -164,7 +165,7 @@ const page = ({ params: { id } }: Props) => {
         <div className="w-full lg:w-1/5 flex items-start justify-center">
           <form
             onSubmit={submit}
-            className="border rounded-lg shadow-lg w-full flex flex-col justify-start px-2 py-6"
+            className="border rounded-lg shadow-lg w-full flex flex-col justify-start px-4 py-6"
           >
             <h1 className="text-lg font-semibold">Checkout Details</h1>
             <div className="grid w-full max-w-sm items-center gap-1.5 my-1">
@@ -260,7 +261,7 @@ const page = ({ params: { id } }: Props) => {
               ${Math.ceil(+bookDetails.price * qty)}
             </p>
 
-            <div className="flex justify-around items-center bg-gray-200 rounded-md w-full py-3 my-2">
+            <div className="flex w-full justify-around items-center bg-gray-200 rounded-md  py-3 my-2 mx-auto">
               <button
                 onClick={qtyDec}
                 className="bg-white p-3 rounded-full w-14 h-14 text-2xl"
@@ -293,4 +294,4 @@ const page = ({ params: { id } }: Props) => {
   )
 }
 
-export default page
+export default dynamic (() => Promise.resolve(page), {ssr: false})
