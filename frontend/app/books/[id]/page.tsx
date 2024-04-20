@@ -3,20 +3,16 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { convertImageUrl } from '@/lib'
+import { convertImageUrl, getTodaysDate } from '@/lib'
 import { Book } from '@/types'
 import {
   Building2,
   CalendarFold,
   MapPin,
-  MessageCircle,
   MessageSquare,
   ScanBarcode,
-  Star,
-  StarIcon,
   Truck,
 } from 'lucide-react'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 type Props = {
@@ -27,7 +23,15 @@ type Props = {
 
 const page = ({ params: { id } }: Props) => {
   const [bookDetails, setBookDetails] = useState<Book | null>(null)
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState({
+    address_line_1: '',
+    address_line_2: '',
+    city: '',
+    postal_code: '',
+    state: '',
+    country: '',
+  })
+  //   const [price, setPrice] = useState(0)
   const [qty, setQty] = useState(1)
 
   useEffect(() => {
@@ -35,10 +39,48 @@ const page = ({ params: { id } }: Props) => {
       const res = await fetch(`http://127.0.0.1:8000/api/books/${id}`)
       const data = await res.json()
       setBookDetails(data)
+      //   setPrice(data.price)
     }
     fetchBookDetails()
   }, [])
-  console.log(bookDetails)
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const res = await fetch('http://127.0.0.1:8000/api/makeorder/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        date: getTodaysDate(),
+        quantity: qty,
+        book_id: bookDetails?.book_id,
+        payment_method: 'COD',
+        shipping_address: location,
+      }),
+    })
+    const data = await res.json()
+    if (res.ok) {
+      alert('Order Placed Successfully')
+    } else {
+      alert('Order Failed')
+    }
+  }
+
+  const qtyDec = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (qty > 1) {
+      setQty((prev) => prev - 1)
+    }
+  }
+
+  const qtyInc = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setQty((prev) => prev + 1)
+  }
+
   if (bookDetails === null) return <div>Loading...</div>
   return (
     <div className="w-full lg:h-[calc(100vh-100px)] flex items-center justify-center">
@@ -120,21 +162,90 @@ const page = ({ params: { id } }: Props) => {
         </div>
         {/* Checkout Info  */}
         <div className="w-full lg:w-1/5 flex items-start justify-center">
-          <div className="border rounded-lg shadow-lg w-full flex flex-col justify-start px-2 py-6">
+          <form
+            onSubmit={submit}
+            className="border rounded-lg shadow-lg w-full flex flex-col justify-start px-2 py-6"
+          >
             <h1 className="text-lg font-semibold">Checkout Details</h1>
-            <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
-              <Label htmlFor="location" className="flex text-base items-center">
-                <MapPin size={15} className="mx-1" />
-                Location
+            <div className="grid w-full max-w-sm items-center gap-1.5 my-1">
+              <Label htmlFor="location" className="flex">
+                Address
               </Label>
               <Input
                 type="text"
                 id="location"
                 className="focus:border-none focus:outline-none text-sm"
-                placeholder="Kathmandu, Nepal"
+                placeholder="Kalanki Mandir Chowk"
                 required
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) =>
+                  setLocation({ ...location, address_line_1: e.target.value })
+                }
               />
+            </div>
+            <div className="flex gap-x-1">
+              <div className="grid w-full max-w-sm items-center gap-1.5 my-1">
+                <Label htmlFor="location" className="flex">
+                  City
+                </Label>
+                <Input
+                  type="text"
+                  id="location"
+                  className="focus:border-none focus:outline-none text-sm"
+                  placeholder="Kathmandu"
+                  required
+                  onChange={(e) =>
+                    setLocation({ ...location, city: e.target.value })
+                  }
+                />
+              </div>
+              <div className="grid w-full max-w-sm items-center gap-1.5 my-1">
+                <Label htmlFor="location" className="flex">
+                  Postal Code
+                </Label>
+                <Input
+                  type="text"
+                  id="location"
+                  className="focus:border-none focus:outline-none text-sm"
+                  placeholder="44600"
+                  required
+                  onChange={(e) =>
+                    setLocation({ ...location, postal_code: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex gap-x-1">
+              <div className="grid w-full max-w-sm items-center gap-1.5 my-1">
+                <Label htmlFor="location" className="flex">
+                  State
+                </Label>
+                <Input
+                  type="text"
+                  id="location"
+                  className="focus:border-none focus:outline-none text-sm"
+                  placeholder="Bagmati"
+                  required
+                  onChange={(e) =>
+                    setLocation({ ...location, state: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="grid w-full max-w-sm items-center gap-1.5 my-1">
+                <Label htmlFor="location" className="flex">
+                  Country
+                </Label>
+                <Input
+                  type="text"
+                  id="location"
+                  className="focus:border-none focus:outline-none text-sm"
+                  placeholder="Nepal"
+                  required
+                  onChange={(e) =>
+                    setLocation({ ...location, country: e.target.value })
+                  }
+                />
+              </div>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
               <Label htmlFor="delivery" className="flex text-base items-center">
@@ -145,13 +256,29 @@ const page = ({ params: { id } }: Props) => {
             </div>
             <div className="h-px w-full bg-gray-200 my-2"></div>
 
-            <p className="text-lg font-semibold mx-1">${bookDetails.price}</p>
+            <p className="text-lg font-semibold mx-1">
+              ${Math.ceil(+bookDetails.price * qty)}
+            </p>
 
             <div className="flex justify-around items-center bg-gray-200 rounded-md w-full py-3 my-2">
-              <button className='bg-white p-3 rounded-full w-14 h-14 text-2xl'>-</button>
-              <p><span className='font-semibold'>QTY:</span> {qty}</p>
-              <button className='bg-white p-3 rounded-full w-14 h-14 text-2xl'>+</button>
+              <button
+                onClick={qtyDec}
+                className="bg-white p-3 rounded-full w-14 h-14 text-2xl"
+              >
+                -
+              </button>
+              <p>
+                <span className="font-semibold">QTY:</span> {qty}
+              </p>
+              <button
+                onClick={qtyInc}
+                className="bg-white p-3 rounded-full w-14 h-14 text-2xl"
+              >
+                +
+              </button>
             </div>
+
+            <p className="text-xs italic">Only Cash on Delivery is available</p>
 
             <Button
               className="my-4 w-full bg-theme hover:bg-theme/95 uppercase"
@@ -159,7 +286,7 @@ const page = ({ params: { id } }: Props) => {
             >
               Buy Now
             </Button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
