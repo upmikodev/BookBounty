@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': 'localhost',
-        'NAME': 'newbookbounty',
+        'NAME': 'bookbountynew',
         'USER': 'root',
         'PASSWORD': 'Samip2003',
         'PORT': '3306',
