@@ -23,7 +23,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['book_id', 'title', 'author', 'description', 'price', 'condition', 'rating', 'ISBN', 'publication_date', 'category','seller', 'seller_name','seller_location','image','status']
+        fields = ['book_id', 'title', 'author', 'description', 'price', 'condition', 'rating', 'ISBN', 'publication_year', 'publisher', 'category','seller', 'seller_name','seller_location','image','status']
 
 class TransactionSerializer(serializers.ModelSerializer):
     seller = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
@@ -35,4 +35,4 @@ class TransactionSerializer(serializers.ModelSerializer):
 class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['book_id', 'title', 'author', 'description', 'price', 'condition', 'rating', 'ISBN', 'publication_date', 'category','seller', 'image','status']
+        fields = ['book_id', 'title', 'author', 'description', 'price', 'condition', 'rating', 'ISBN', 'publication_year', 'publisher', 'category','seller', 'image','status']
