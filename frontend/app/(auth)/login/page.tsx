@@ -7,6 +7,7 @@ import { IsLoggedInContext } from '@/contexts/IsLoggedIn'
 import { Label } from '@radix-ui/react-label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 const Login = () => {
   const [loginSuccess, setLoginSuccess] = useState(false)
@@ -49,17 +50,23 @@ const Login = () => {
   }
 
   return (
-    <div className='flex h-[calc(100vh-100px)] w-full items-center justify-center'>
-      <h3 className={`${loginSuccess ? 'text-green-500' : 'text-red-500'}`}>
-        {message}
-      </h3>
-      <form onSubmit={submit} className="text-black border rounded-xl shadow-xl w-[35%] h-[500px] flex flex-col items-center justify-center">
-        <h1 className="my-4 text-2xl font-bold">Log in</h1>
+    <div className="flex h-[calc(100vh-100px)] w-full items-center justify-center">
+      <form
+        onSubmit={submit}
+        className="text-black border rounded-xl shadow-xl w-[35%] h-[500px] flex flex-col items-center justify-center"
+      >
+        <h1 className="my-4 text-2xl font-bold">Login</h1>
+
+        <h3 className={`${loginSuccess ? 'text-green-500' : 'text-red-500'}`}>
+          {message}
+        </h3>
+        
         <div className="grid w-full max-w-sm items-center gap-1.5 my-3">
           <Label htmlFor="email">Email</Label>
           <Input
             type="email"
             id="email"
+            className="focus:border-none focus:outline-none"
             placeholder="Email"
             required
             onChange={(e) => setEmail(e.target.value)}
@@ -70,13 +77,23 @@ const Login = () => {
           <Input
             type="password"
             id="password"
+            className="focus:border-none focus:outline-none"
             placeholder="Password"
             required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <Button className='my-4' type="submit">Log in</Button>
+        <Button className="my-4 w-96 bg-theme hover:bg-theme/95" type="submit">
+          Login
+        </Button>
+
+        <p className="my-2">
+          Don't have an account?{' '}
+          <Link href="/register" className="text-theme">
+            Register
+          </Link>
+        </p>
       </form>
     </div>
   )

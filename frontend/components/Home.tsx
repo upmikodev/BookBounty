@@ -9,7 +9,7 @@ function Home() {
 
   return (
     <>
-      <div className=''><BookList /></div>
+      <div className='flex items-center justify-center'><BookList /></div>
     </>
   )
 }

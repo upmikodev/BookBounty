@@ -1,4 +1,6 @@
-import { Button } from "./ui/button"
+import Image from 'next/image'
+import { Button } from './ui/button'
+import { convertImageUrl } from '@/lib'
 
 interface Book {
   book_id: number
@@ -12,7 +14,9 @@ interface Book {
   publication_year: string
   publisher: string
   category: string
-  seller: string
+  seller?: string
+  seller_name?: string
+  seller_location?: string
   status: string
   image: string
 }
@@ -22,24 +26,30 @@ interface BookCardProps {
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
+  const imageUrl = convertImageUrl(book.image)
+  console.log(convertImageUrl(book.image))
   return (
-    <div className="w-96 rounded-lg overflow-hidden shadow-lg m-4 flex flex-col justify-center items-center">
+    <div className="w-72 m-4 flex flex-col justify-center items-center shadow-md border py-4 rounded-lg">
       <img
-        className="h-64 object-cover"
-        src={book.image}
+        className="h-64 w-40 object-cover border-[0.1px] border-black rounded"
+        src={imageUrl}
         alt={book.title}
+        // height={1000}
+        // width={1000}
       />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{book.title}</div>
-        <p className="text-gray-700 text-base mb-2"><span className="font-bold">Author:{' '}</span>{book.author}</p>
-        <p className="text-gray-900 text-xl mb-2">${book.price}</p>
+      <div className="px-6 py-4 w-full">
+        <div className="font-bold text-base mb-2 line-clamp-1">
+          {book.title}
+        </div>
+        <p className="text-gray-700 text-sm mb-2 line-clamp-1">
+          <span className="font-bold">by </span>
+          {book.author}
+        </p>
+        <p className="text-gray-900 text-base mb-2">${book.price}</p>
         <div>
-        <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-1">
-          Buy
-        </Button>
-        <Button className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mx-1">
-          Details
-        </Button>
+          <Button className="bg-theme hover:bg-theme/95 w-full text-white font-bold py-2 px-4 rounded">
+            Buy
+          </Button>
         </div>
       </div>
     </div>
