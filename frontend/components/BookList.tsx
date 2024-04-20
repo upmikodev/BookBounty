@@ -37,8 +37,8 @@ const BookList = () => {
 
   return (
     <div className="max-w-[1600px]">
-      <div className="my-3">
-        <Image src={Banner2} alt="" className="rounded-lg" />
+      <div>
+        <Image src={Banner2} alt=""/>
       </div>
       <div className={`${!isLoggedIn ? 'hidden' : 'flex flex-col'}`}>
         <h1 className="text-4xl my-5 font-semibold w-full px-5">

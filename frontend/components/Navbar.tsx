@@ -20,11 +20,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Logo from '@/public/bb.png'
 import { usePathname, useRouter } from 'next/navigation'
+import { useMediaQuery } from '@react-hook/media-query'; 
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useContext(IsLoggedInContext)
   const router = useRouter()
   // const pathname = usePathname()
+  const isSmScreen = useMediaQuery('(max-width: 640px)');
 
   const logout = async () => {
     await fetch('http://127.0.0.1:8000/api/logout', {
@@ -53,11 +55,12 @@ export default function Navbar() {
   }
 
   return (
-    <div className="w-full h-24 shadow-lg px-8">
+    <div className="w-full h-17 shadow-lg px-8">
       <div className="max-w-[1500px] mx-auto h-full w-full flex items-center justify-between">
         <Link href="/" className="text-2xl font-extrabold">
           <Image src={Logo} alt="BookBounty" className="h-20 w-48" />
         </Link>
+        {isSmScreen ? (null):(
         <ul className="flex">
           <Link href="/">
             <li className="px-3 mx-5 text-base">Home</li>
@@ -75,6 +78,7 @@ export default function Navbar() {
             My Listings
           </li>
         </ul>
+        )}
         {isLoggedIn ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'bookbounty.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'd6ybckq58s9ru745.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        'NAME': 'lggko6ual064qpj3',
-        'USER': 'xc72l85qspz9e1wa',
-        'PASSWORD': 'icyvl9jxl0ky4g91',
+        'HOST': 'localhost',
+        'NAME': 'newbookbounty',
+        'USER': 'root',
+        'PASSWORD': 'rojesh',
         'PORT': '3306',
 
     }
