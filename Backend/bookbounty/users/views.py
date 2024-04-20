@@ -137,6 +137,12 @@ class OrderAPIView(APIView):
         book = Book.objects.get(pk=book_id)
         book.status = 'order received'
         book.save()
+
+    # Update the mutable_data to include shipping address fields
+        shipping_address_data = request.data.get('shipping_address')
+        if shipping_address_data:
+            mutable_data['shipping_address'] = shipping_address_data
+
         mutable_data['price']=int(book.price) * int(request.data.get('quantity'))
         mutable_data['buyer']= user_id
         mutable_data['seller']= book.seller.id
