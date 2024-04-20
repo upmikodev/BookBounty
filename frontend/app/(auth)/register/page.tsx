@@ -32,9 +32,7 @@ const Register = () => {
         location,
       }),
     });
-    const data: { [key: string]: string[] } = await res.json();
-    console.log("res (Registration): ", res);
-    console.log("data (Registration): ", data);
+    const data: { [key: string]: string[] } = await res.json()
 
     if (res.ok) {
       await router.push("/login");

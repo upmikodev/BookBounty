@@ -31,3 +31,11 @@ export interface Listing {
   status: string
   image: File | null
 }
+
+export interface User {
+  id: number
+  email: string
+  name: string
+  username: string
+  location: string
+}

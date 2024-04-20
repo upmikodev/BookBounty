@@ -14,6 +14,9 @@ export function getCSRFToken() {
 }
 
 export function convertImageUrl(url: string): string {
+  if (url.startsWith('/books/')) {
+    return `http://127.0.0.1:8000${url}`
+  }
   return url.replace('/http%3A/', 'https://')
 }
 
